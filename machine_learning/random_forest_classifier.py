@@ -15,7 +15,26 @@ warnings.filterwarnings("ignore")
 
 x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', 0.2)
 
-RF = RandomForestClassifier(n_estimators=15, oob_score=True, n_jobs=-1)
+# from sklearn.ensemble import RandomForestClassifier
+# from sklearn.model_selection import GridSearchCV
+
+# Define the parameter values that should be searched
+# param_grid = {'n_estimators': [100, 200, 300, 1000]} ==> Optimal 1000
+# param_grid = {'n_estimators': [1000, 1500, 2000]} ==> Optimal 2000
+# param_grid = {'n_estimators': [2000, 4000, 6000, 8000, 10000]} # ==> Optimal 6000
+
+# Instantiate the grid
+# grid = GridSearchCV(RandomForestClassifier(), param_grid, cv=3, n_jobs=-1)
+
+# Fit the grid with data
+# grid.fit(x_res, y_res)
+
+# View the optimal parameters
+# print("Optimal parameters: ", grid.best_params_)
+
+# sys.exit()
+
+RF = RandomForestClassifier(n_estimators=6000, oob_score=True, n_jobs=-1)
 
 RF.fit(x_res, y_res)
 
