@@ -4,7 +4,7 @@ import pandas as pd
 big_dataset = pd.read_csv('data/paysim.csv')
 
 # Specify the number of rows you want in your random subset
-subset_size = 100000
+subset_size = 1000
 
 # Take a random subset
 random_subset = big_dataset.sample(n=subset_size)
