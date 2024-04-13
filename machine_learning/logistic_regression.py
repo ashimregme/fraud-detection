@@ -13,7 +13,7 @@ sns.set(palette="Set2")
 
 warnings.filterwarnings("ignore")
 
-x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', 0.2)
+x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', 0.05)
 
 clf = LogisticRegression()
 clf.fit(x_res, y_res)
