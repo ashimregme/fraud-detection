@@ -31,6 +31,6 @@ print("Classification Report Train:\n", CR_MNBtrain)
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("F1:", f1_score(y_test, y_pred))
-print("Area under precision (AUC) Recall:", average_precision_score(y_test, y_pred))
+print("Average Precision (AP):", average_precision_score(y_test, y_pred))
 
 sys.exit(0)

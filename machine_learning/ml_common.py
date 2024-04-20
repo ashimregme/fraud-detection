@@ -28,37 +28,35 @@ def preprocess_data(file_path, sampling_strategy=0.2):
     # Reading the csv file
     data = pd.read_csv(file_path)
 
-    # Creating a copy of the data
-    data_new = data.copy()
     # Adding a new column "Type2" with default value as NaN
-    data_new["Type2"] = np.nan
+    data["Type2"] = np.nan
 
     # Populating the "Type2" column based on the conditions
-    data_new.loc[data.nameOrig.str.contains('C') & data.nameDest.str.contains('C'), "Type2"] = "CC"
-    data_new.loc[data.nameOrig.str.contains('C') & data.nameDest.str.contains('M'), "Type2"] = "CM"
-    data_new.loc[data.nameOrig.str.contains('M') & data.nameDest.str.contains('C'), "Type2"] = "MC"
-    data_new.loc[data.nameOrig.str.contains('M') & data.nameDest.str.contains('M'), "Type2"] = "MM"
+    data.loc[data.nameOrig.str.contains('C') & data.nameDest.str.contains('C'), "Type2"] = "CC"
+    data.loc[data.nameOrig.str.contains('C') & data.nameDest.str.contains('M'), "Type2"] = "CM"
+    data.loc[data.nameOrig.str.contains('M') & data.nameDest.str.contains('C'), "Type2"] = "MC"
+    data.loc[data.nameOrig.str.contains('M') & data.nameDest.str.contains('M'), "Type2"] = "MM"
 
     # Adding a new column "HourOfDay" with default value as NaN
-    data_new["HourOfDay"] = np.nan
+    data["HourOfDay"] = np.nan
     # Populating the "HourOfDay" column with the remainder of step divided by 24
-    data_new.HourOfDay = data_new.step % 24
+    data.HourOfDay = data.step % 24
 
     # Printing the head of the dataset
-    print("Head of dataset: \n", pd.DataFrame.head(data_new))
+    # print("Head of dataset: \n", pd.DataFrame.head(data))
 
     # Dropping the unnecessary columns
-    data_new = data_new.drop(["isFlaggedFraud", 'nameOrig', 'nameDest'], axis=1)
+    data = data.drop(["isFlaggedFraud", 'nameOrig', 'nameDest'], axis=1)
 
     # One-hot encoding the categorical variables
-    data_new = pd.get_dummies(data_new, prefix=['type', 'Type2'], drop_first=True)
+    data = pd.get_dummies(data, prefix=['type', 'Type2'], drop_first=True)
 
     # Printing the head of the dataset
-    print("Head of dataset: \n", pd.DataFrame.head(data_new))
+    # print("Head of dataset: \n", pd.DataFrame.head(data))
 
     # Splitting the data into features and labels
-    x = data_new.drop("isFraud", axis=1)
-    y = data_new.isFraud
+    x = data.drop("isFraud", axis=1)
+    y = data.isFraud
 
     # Splitting the data into training and test sets
     x_train, x_test, y_train, y_test = train_test_split(x, y)

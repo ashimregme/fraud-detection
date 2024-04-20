@@ -79,6 +79,15 @@ fraud_cashout = fraud[fraud["type"] == "CASH_OUT"]
 # checking if the recipient account of a fraudulent transfer was used as a sending account for cashing out
 fraud_transfer.nameDest.isin(fraud_cashout.nameOrig).any()
 
+data['isFraud'].value_counts()
+sns.set_theme(style="darkgrid")
+ax = sns.countplot(x="isFraud", data=data)
+for p in ax.patches:
+    ax.annotate(str(format(int(p.get_height()), ',d')), (p.get_x(), p.get_height()))
+
+fraud_percent = (8213 / (6354407 + 8213)) * 100
+print('The percentage of Fraud transactions is ' "%.2f" % fraud_percent, '%')
+
 #
 
 # For fraudulent transactions, the account that received funds during a transfer was not used at all for cashing out.

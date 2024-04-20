@@ -1,6 +1,7 @@
 import sys
 import warnings
 
+import numpy as np
 # %matplotlib inline
 import seaborn as sns
 from sklearn.linear_model import SGDClassifier
@@ -13,13 +14,17 @@ sns.set(palette="Set2")
 
 warnings.filterwarnings("ignore")
 
-x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('data/paysim.csv', 0.2)
+x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', 0.05)
+print("Number of rows in resampled set: ", x_res.shape[0])
+print("Max Iterations: ", int(np.ceil(10 ** 6 / x_res.shape[0])))
 
-clf = SGDClassifier(loss="hinge", penalty="l2", max_iter=5)
+# Sci-Kit: Empirically, we found that SGD converges after observing approx. 10^6 training samples.
+# Thus, a reasonable first guess for the number of iterations is n_iter = np.ceil(10**6 / n),
+# where n is the size of the training set.
+clf = SGDClassifier(loss="modified_huber", penalty="elasticnet", max_iter=int(np.ceil(10 ** 6 / x_res.shape[0])))
 clf.fit(x_res, y_res)
 y_pred = clf.predict(x_test)
 y_predtrain = clf.predict(x_train)
-SGDClassifier(max_iter=5)
 CM_svc = confusion_matrix(y_test, y_pred)
 CR_svc = classification_report(y_test, y_pred)
 CM_svctrain = confusion_matrix(y_train, y_predtrain)
@@ -32,6 +37,6 @@ print("Classification Report Train:\n", CR_svctrain)
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("F1:", f1_score(y_test, y_pred))
-print("Area under precision (AUC) Recall:", average_precision_score(y_test, y_pred))
+print("Average Precision (AP):", average_precision_score(y_test, y_pred))
 
 sys.exit(0)

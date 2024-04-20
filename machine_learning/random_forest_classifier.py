@@ -13,7 +13,7 @@ sns.set(palette="Set2")
 
 warnings.filterwarnings("ignore")
 
-x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', 0.2)
+x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', 0.025)
 
 # from sklearn.ensemble import RandomForestClassifier
 # from sklearn.model_selection import GridSearchCV
@@ -54,6 +54,6 @@ print("Classification Report Train Data:\n", CR_RF_train)
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("F1:", f1_score(y_test, y_pred))
-print("Area under precision (AUC) Recall:", average_precision_score(y_test, y_pred))
+print("Average Precision (AP):", average_precision_score(y_test, y_pred))
 
 sys.exit(0)
