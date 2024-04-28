@@ -4,8 +4,8 @@ import warnings
 # %matplotlib inline
 import seaborn as sns
 from sklearn.metrics import (accuracy_score, f1_score, confusion_matrix,
-                             average_precision_score, precision_score, recall_score, classification_report)
-from sklearn.model_selection import GridSearchCV
+                             average_precision_score, precision_score, recall_score, classification_report,
+                             roc_auc_score)
 from xgboost import XGBClassifier
 
 from ml_common import preprocess_data
@@ -43,10 +43,10 @@ param_grid = {
 # print(f"Best parameters: {best_params}")
 
 xgb_model = XGBClassifier(max_depth=5, learning_rate=0.05,
-                          n_estimators=350,
-                          min_child_weight=0.5,
+                          n_estimators=700,
+                          min_child_weight=1.5,
                           use_label_encoder=False,
-                          eval_metric=['auc', 'logloss'])
+                          eval_metric=['auc', 'error', 'logloss'])
 # xgb_model = XGBClassifier(max_depth=5, learning_rate=0.15,
 #                           n_estimators=350, min_child_weight=0.1,
 #                           use_label_encoder=False)
@@ -70,5 +70,6 @@ print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("F1:", f1_score(y_test, y_pred))
 print("Average Precision (AP):", average_precision_score(y_test, y_pred))
+print("ROC AUC:", roc_auc_score(y_test, y_pred))
 
 sys.exit(0)
