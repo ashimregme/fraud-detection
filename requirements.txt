@@ -7,3 +7,4 @@ keras
 matplotlib
 imblearn
 xgboost
+imbalance-xgboost
