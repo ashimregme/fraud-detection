@@ -15,13 +15,19 @@ sns.set(palette="Set2")
 
 warnings.filterwarnings("ignore")
 
-x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv')
+x_res, y_res, x_train, x_test, y_train, y_test = preprocess_data('../data/paysim.csv', sampling_strategy=0.01)
 
 start_time = time.time()
 
-xg_booster = imb_xgb()
+xg_booster = imb_xgb(
+    special_objective='weighted',
+    imbalance_alpha=0.6,
+    eval_metric=['auc', 'error', 'logloss'],
+    eta=0.20,
+    verbosity=1
+)
 
-xg_booster.fit(x_res, y_res)
+xg_booster.fit(x_train, y_train.to_numpy())
 
 y_pred = xg_booster.predict_determine(x_test)
 
